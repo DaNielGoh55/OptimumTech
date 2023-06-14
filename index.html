@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Fee Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+</head>
+<style>
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 5px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h2>Service Fee Calculator</h2>
+        <label>Monthly Rental:</label>
+        <input type="number" id="monthlyRental" placeholder="Enter monthly rental">
+        <label>Duration (in years):</label>
+        <input type="number" id="duration" value="1" placeholder="Enter duration in years">
+        <label>Additional Copies: RM10/e</label>
+        <input type="number" id="numberCopy" value="1" placeholder="How many copies">
+        <!-- <button onclick="calculateServiceFee()">Calculate</button> -->
+        <button class="my-2" onclick="resetForm()">Reset</button>
+        <div class="result-table">
+            <div class="d-flex justify-content-between">
+                <div>Remaining :</div>
+                <div id="resultRemain">RM 0</div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div>SubTotal :</div>
+                <div id="subTotal">RM 0</div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div>Service Charge :</div>
+                <div>RM 20</div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div>Additional Copy :</div>
+                <div id="additionCopy">RM 10</div>
+            </div>
+            <div class="d-flex justify-content-between font-weight-bold">
+                <div>Grand Total :</div>
+                <div id="result">RM 0</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        monthlyRental.addEventListener('input', calculateServiceFee);
+        duration.addEventListener('input', calculateServiceFee);
+        numberCopy.addEventListener('input', calculateServiceFee);
+
+        function calculateServiceFee() {
+            var monthlyRental = parseFloat(document.getElementById('monthlyRental').value);
+            var duration = parseFloat(document.getElementById('duration').value);
+            var numberCopy = parseFloat(document.getElementById('numberCopy').value);
+
+            var remaining = (monthlyRental * duration * 12) - 2400;
+            var singleMonth = (monthlyRental * 12) - 2400;
+            var copy = 10 * numberCopy;
+            var durationReturn;
+
+            if (duration === 1) {
+                durationReturn = 1;
+            } else if (duration === 2 || duration === 3) {
+                durationReturn = 2;
+            } else {
+                durationReturn = 4;
+            }
+
+            var subTotal = (singleMonth / 250) * durationReturn;
+            var grandTotal = subTotal + copy + 20;
+
+            document.getElementById('resultRemain').innerHTML = 'RM ' + remaining.toFixed(2);
+            document.getElementById('subTotal').innerHTML = 'RM ' + subTotal.toFixed(2);
+            document.getElementById('additionCopy').innerHTML = 'RM ' + copy.toFixed(2);
+            document.getElementById('result').innerHTML = 'RM' + grandTotal.toFixed(2);
+            // console.log(durationReturn);
+        }
+
+        function resetForm() {
+            document.getElementById('monthlyRental').value = '';
+            document.getElementById('resultRemain').innerHTML = 'RM 0';
+            document.getElementById('duration').value = '1';
+            document.getElementById('numberCopy').value = '1';
+            document.getElementById('result').innerHTML = 'RM 0';
+            document.getElementById('subTotal').innerHTML = 'RM 0';
+            document.getElementById('additionCopy').innerHTML = 'RM 0';
+        }
+    </script>
+</body>
+
+</html>
